@@ -1,0 +1,1173 @@
+<!doctype html><html><head><meta charset=utf8><meta name=viewport content="width=device-width,initial-scale=1,viewport-fit=cover"><style>:root{color-scheme:light;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}html{scroll-padding-top:env(safe-area-inset-top,0px)}body{margin:0;padding:0;font:14px -apple-system,BlinkMacSystemFont,sans-serif;background:#fff;color:#000}img{max-width:100%}[hidden]:not([hidden=until-found i]){display:none!important}</style></head><body>
+<title>Sunset Valley Atlas</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Baloo+2:wght@600;800&family=Lilita+One&family=Nunito+Sans:opsz,wght@6..12,400;6..12,600;6..12,700&family=IBM+Plex+Mono:wght@400;500&display=swap">
+<style>
+/* Rozvržení: horní pás s názvem města, pod ním mapa přes celou šířku a vedle ní panel s legendou a seznamem míst (na mobilu pod mapou). */
+:root{
+  --bg:#f1f4ec; --surface:#ffffff; --fg:#1c2a21; --muted:#5d6b61; --line:#d7dfd2;
+  --sea:#1d5878; --meadow:#5f8f33; --accent:#2fa35a; --sand:#e8dcbc;
+  --lot-house:#e8dcbc; --lot-public:#5cc0d8; --lot-empty:#8fd16a; --bld-house:#b0473c; --bld-public:#2d6f9e;
+  --display:"Baloo 2","Trebuchet MS",system-ui,sans-serif;
+  --body:"Nunito Sans",system-ui,-apple-system,"Segoe UI",sans-serif;
+  --mono:"IBM Plex Mono",ui-monospace,Consolas,monospace;
+}
+@media (prefers-color-scheme: dark){:root:not([data-theme="light"]){
+  --bg:#111a15; --surface:#18241d; --fg:#e4ede5; --muted:#9db0a3; --line:#2b3a31;
+  --sea:#7ec3e6; --meadow:#9fd06e; --accent:#55c97d; --sand:#4a432f; color-scheme:dark}}
+:root[data-theme="dark"]{
+  --bg:#111a15; --surface:#18241d; --fg:#e4ede5; --muted:#9db0a3; --line:#2b3a31;
+  --sea:#7ec3e6; --meadow:#9fd06e; --accent:#55c97d; --sand:#4a432f; color-scheme:dark}
+body{background:var(--bg);color:var(--fg);font-family:var(--body);font-size:15px;line-height:1.5}
+body::before{content:"";position:fixed;inset:0 0 auto;height:env(safe-area-inset-top,0px);z-index:1000;background:var(--bg)}
+.wrap{padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px));max-width:1500px;margin:0 auto}
+header{padding-block:44px 30px}
+.hero{position:relative;isolation:isolate;overflow:hidden}
+.hero::before{content:"";position:absolute;inset:0;z-index:-2;background:url("hlavicka.jpg") center 52%/cover no-repeat;opacity:.5;-webkit-mask-image:linear-gradient(to bottom,#000 55%,transparent);mask-image:linear-gradient(to bottom,#000 55%,transparent)}
+.hero::after{content:"";position:absolute;inset:0;z-index:-1;background:linear-gradient(90deg,color-mix(in srgb,var(--bg) 82%,transparent) 0%,color-mix(in srgb,var(--bg) 55%,transparent) 55%,color-mix(in srgb,var(--bg) 20%,transparent) 100%)}
+@media (prefers-color-scheme: dark){:root:not([data-theme="light"]) .hero::before{opacity:.35}}
+:root[data-theme="dark"] .hero::before{opacity:.35}
+.brand{display:flex;align-items:center;gap:18px;flex-wrap:wrap}
+.mark{height:clamp(84px,11vw,118px);width:auto;flex:none;filter:drop-shadow(0 2px 6px rgba(0,0,0,.18))}
+h1{font-family:"Lilita One",var(--display);font-weight:400;font-size:clamp(2.6rem,6vw,4.3rem);line-height:1;margin:0;letter-spacing:.01em;color:#ffffff;-webkit-text-stroke:.09em #1b4f9e;paint-order:stroke fill;text-shadow:0 .06em 0 #123a78,0 .12em .25em rgba(0,0,0,.25);text-wrap:balance}
+h1 span{color:#8fd33a}
+.sub{margin:6px 0 0;color:var(--muted);font-size:1.02rem;max-width:62ch}
+.meta{font-family:var(--mono);font-size:.78rem;color:var(--muted);letter-spacing:.04em;text-transform:uppercase;margin-top:12px}
+main{display:flex;flex-direction:column;gap:10px;padding-block:6px 0}
+.simove{margin:0;display:flex;justify-content:center;align-items:flex-start;min-width:0}
+.simove img{width:min(100%,440px);height:auto;opacity:.52;filter:saturate(.82);-webkit-mask-image:linear-gradient(to bottom,#000 70%,transparent);mask-image:linear-gradient(to bottom,#000 70%,transparent)}
+@media (max-width:900px){.simove img{width:min(100%,320px)}}
+#map{height:clamp(460px,80vh,920px);border-radius:14px;border:1px solid var(--line);background:var(--sea);overflow:hidden}
+aside{display:flex;flex-direction:column;gap:16px;min-width:0}
+.panel{background:var(--surface);border:1px solid var(--line);border-radius:14px;padding:16px}
+.panel h2{font-family:var(--display);font-weight:600;font-size:1.15rem;margin:0 0 10px}
+.toggles{display:flex;flex-direction:column;gap:8px}
+.toggles label{display:flex;align-items:center;gap:10px;cursor:pointer}
+.toggles input{accent-color:var(--accent);width:17px;height:17px}
+.legend{display:grid;grid-template-columns:22px 1fr;gap:7px 10px;align-items:center;font-size:.92rem}
+.sw{width:22px;height:14px;border-radius:4px;border:1px solid rgba(0,0,0,.25)}
+.places{list-style:none;margin:0;padding:0;display:flex;flex-direction:column;gap:2px;max-height:330px;overflow:auto}
+.places button{all:unset;display:flex;justify-content:space-between;gap:8px;width:100%;box-sizing:border-box;padding:6px 8px;border-radius:8px;cursor:pointer;font-size:.93rem}
+.places button:hover,.places button:focus-visible{background:color-mix(in srgb,var(--accent) 16%,transparent)}
+.places button:focus-visible{outline:2px solid var(--accent)}
+.places small{color:var(--muted);font-family:var(--mono);font-size:.72rem;white-space:nowrap}
+.hint{color:var(--muted);font-size:.85rem;margin:0}
+.mapwrap{position:relative;min-width:0;border-radius:14px;overflow:hidden}
+.m-info{position:absolute;top:12px;right:56px;z-index:1002;width:min(280px,calc(100% - 80px));max-height:calc(100% - 24px);overflow:auto;background:var(--surface);color:var(--fg);border:1px solid var(--line);border-radius:14px;box-shadow:0 8px 26px rgba(0,0,0,.22)}
+.m-info .x{position:sticky;top:0;float:right;margin:6px 8px -40px 0;z-index:2;width:30px;height:30px;border-radius:99px;border:0;background:rgba(0,0,0,.45);color:#fff;font:inherit;font-size:1.2rem;line-height:1;cursor:pointer}
+.m-info .x:focus-visible{outline:2px solid var(--accent)}
+.m-info .pop>img{aspect-ratio:16/10}
+@media (max-width:600px){.m-info{top:auto;bottom:10px;left:10px;right:10px;width:auto;max-height:55%}}
+.drawer-btn{position:absolute;top:12px;left:12px;z-index:1001;width:38px;height:38px;border-radius:10px;border:1px solid var(--line);background:var(--surface);color:var(--fg);display:grid;place-items:center;cursor:pointer;box-shadow:0 2px 8px rgba(0,0,0,.18);transition:left .25s ease}
+.drawer-btn:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
+.drawer-btn svg{transition:transform .25s ease}
+.mapwrap.open .drawer-btn{left:min(300px,calc(85% + 10px))}
+.mapwrap.open .drawer-btn svg{transform:rotate(180deg)}
+.drawer{position:absolute;top:0;bottom:0;left:0;z-index:1000;width:min(290px,85%);background:var(--surface);border-right:1px solid var(--line);box-shadow:4px 0 18px rgba(0,0,0,.18);transform:translateX(-105%);transition:transform .25s ease;display:flex;flex-direction:column;padding:16px 14px;gap:12px;box-sizing:border-box}
+.mapwrap.open .drawer{transform:none}
+.drawer h2{font-family:var(--display);font-weight:600;font-size:1.15rem;margin:0}
+.drawer input{width:100%;box-sizing:border-box;font:inherit;padding:9px 12px;border-radius:10px;border:1px solid var(--line);background:var(--bg);color:var(--fg)}
+.drawer input:focus-visible{outline:2px solid var(--accent);outline-offset:1px}
+.results{list-style:none;margin:0;padding:0;overflow:auto;flex:1;display:flex;flex-direction:column;gap:2px;min-height:0}
+.results button{all:unset;display:block;width:100%;box-sizing:border-box;padding:7px 9px;border-radius:8px;cursor:pointer}
+.results button:hover,.results button:focus-visible{background:color-mix(in srgb,var(--accent) 16%,transparent)}
+.results button:focus-visible{outline:2px solid var(--accent)}
+.results b{display:block;font-weight:600;font-size:.93rem}
+.results span{color:var(--muted);font-size:.8rem}
+.count{color:var(--muted);font-size:.8rem;margin:0}
+/* leaflet */
+
+
+.leaflet-pane,
+.leaflet-tile,
+.leaflet-marker-icon,
+.leaflet-marker-shadow,
+.leaflet-tile-container,
+.leaflet-pane > svg,
+.leaflet-pane > canvas,
+.leaflet-zoom-box,
+.leaflet-image-layer,
+.leaflet-layer {
+	position: absolute;
+	left: 0;
+	top: 0;
+	}
+.leaflet-container {
+	overflow: hidden;
+	}
+.leaflet-tile,
+.leaflet-marker-icon,
+.leaflet-marker-shadow {
+	-webkit-user-select: none;
+	   -moz-user-select: none;
+	        user-select: none;
+	  -webkit-user-drag: none;
+	}
+
+.leaflet-tile::selection {
+	background: transparent;
+}
+
+.leaflet-safari .leaflet-tile {
+	image-rendering: -webkit-optimize-contrast;
+	}
+
+.leaflet-safari .leaflet-tile-container {
+	width: 1600px;
+	height: 1600px;
+	-webkit-transform-origin: 0 0;
+	}
+.leaflet-marker-icon,
+.leaflet-marker-shadow {
+	display: block;
+	}
+
+
+.leaflet-container .leaflet-overlay-pane svg {
+	max-width: none !important;
+	max-height: none !important;
+	}
+.leaflet-container .leaflet-marker-pane img,
+.leaflet-container .leaflet-shadow-pane img,
+.leaflet-container .leaflet-tile-pane img,
+.leaflet-container img.leaflet-image-layer,
+.leaflet-container .leaflet-tile {
+	max-width: none !important;
+	max-height: none !important;
+	width: auto;
+	padding: 0;
+	}
+
+.leaflet-container img.leaflet-tile {
+	
+	mix-blend-mode: plus-lighter;
+}
+
+.leaflet-container.leaflet-touch-zoom {
+	-ms-touch-action: pan-x pan-y;
+	touch-action: pan-x pan-y;
+	}
+.leaflet-container.leaflet-touch-drag {
+	-ms-touch-action: pinch-zoom;
+	
+	touch-action: none;
+	touch-action: pinch-zoom;
+}
+.leaflet-container.leaflet-touch-drag.leaflet-touch-zoom {
+	-ms-touch-action: none;
+	touch-action: none;
+}
+.leaflet-container {
+	-webkit-tap-highlight-color: transparent;
+}
+.leaflet-container a {
+	-webkit-tap-highlight-color: rgba(51, 181, 229, 0.4);
+}
+.leaflet-tile {
+	filter: inherit;
+	visibility: hidden;
+	}
+.leaflet-tile-loaded {
+	visibility: inherit;
+	}
+.leaflet-zoom-box {
+	width: 0;
+	height: 0;
+	-moz-box-sizing: border-box;
+	     box-sizing: border-box;
+	z-index: 800;
+	}
+
+.leaflet-overlay-pane svg {
+	-moz-user-select: none;
+	}
+
+.leaflet-pane         { z-index: 400; }
+
+.leaflet-tile-pane    { z-index: 200; }
+.leaflet-overlay-pane { z-index: 400; }
+.leaflet-shadow-pane  { z-index: 500; }
+.leaflet-marker-pane  { z-index: 600; }
+.leaflet-tooltip-pane   { z-index: 650; }
+.leaflet-popup-pane   { z-index: 700; }
+
+.leaflet-map-pane canvas { z-index: 100; }
+.leaflet-map-pane svg    { z-index: 200; }
+
+.leaflet-vml-shape {
+	width: 1px;
+	height: 1px;
+	}
+.lvml {
+	behavior: url(#default#VML);
+	display: inline-block;
+	position: absolute;
+	}
+
+
+
+
+.leaflet-control {
+	position: relative;
+	z-index: 800;
+	pointer-events: visiblePainted; 
+	pointer-events: auto;
+	}
+.leaflet-top,
+.leaflet-bottom {
+	position: absolute;
+	z-index: 1000;
+	pointer-events: none;
+	}
+.leaflet-top {
+	top: 0;
+	}
+.leaflet-right {
+	right: 0;
+	}
+.leaflet-bottom {
+	bottom: 0;
+	}
+.leaflet-left {
+	left: 0;
+	}
+.leaflet-control {
+	float: left;
+	clear: both;
+	}
+.leaflet-right .leaflet-control {
+	float: right;
+	}
+.leaflet-top .leaflet-control {
+	margin-top: 10px;
+	}
+.leaflet-bottom .leaflet-control {
+	margin-bottom: 10px;
+	}
+.leaflet-left .leaflet-control {
+	margin-left: 10px;
+	}
+.leaflet-right .leaflet-control {
+	margin-right: 10px;
+	}
+
+
+
+
+.leaflet-fade-anim .leaflet-popup {
+	opacity: 0;
+	-webkit-transition: opacity 0.2s linear;
+	   -moz-transition: opacity 0.2s linear;
+	        transition: opacity 0.2s linear;
+	}
+.leaflet-fade-anim .leaflet-map-pane .leaflet-popup {
+	opacity: 1;
+	}
+.leaflet-zoom-animated {
+	-webkit-transform-origin: 0 0;
+	    -ms-transform-origin: 0 0;
+	        transform-origin: 0 0;
+	}
+svg.leaflet-zoom-animated {
+	will-change: transform;
+}
+
+.leaflet-zoom-anim .leaflet-zoom-animated {
+	-webkit-transition: -webkit-transform 0.25s cubic-bezier(0,0,0.25,1);
+	   -moz-transition:    -moz-transform 0.25s cubic-bezier(0,0,0.25,1);
+	        transition:         transform 0.25s cubic-bezier(0,0,0.25,1);
+	}
+.leaflet-zoom-anim .leaflet-tile,
+.leaflet-pan-anim .leaflet-tile {
+	-webkit-transition: none;
+	   -moz-transition: none;
+	        transition: none;
+	}
+
+.leaflet-zoom-anim .leaflet-zoom-hide {
+	visibility: hidden;
+	}
+
+
+
+
+.leaflet-interactive {
+	cursor: pointer;
+	}
+.leaflet-grab {
+	cursor: -webkit-grab;
+	cursor:    -moz-grab;
+	cursor:         grab;
+	}
+.leaflet-crosshair,
+.leaflet-crosshair .leaflet-interactive {
+	cursor: crosshair;
+	}
+.leaflet-popup-pane,
+.leaflet-control {
+	cursor: auto;
+	}
+.leaflet-dragging .leaflet-grab,
+.leaflet-dragging .leaflet-grab .leaflet-interactive,
+.leaflet-dragging .leaflet-marker-draggable {
+	cursor: move;
+	cursor: -webkit-grabbing;
+	cursor:    -moz-grabbing;
+	cursor:         grabbing;
+	}
+
+
+.leaflet-marker-icon,
+.leaflet-marker-shadow,
+.leaflet-image-layer,
+.leaflet-pane > svg path,
+.leaflet-tile-container {
+	pointer-events: none;
+	}
+
+.leaflet-marker-icon.leaflet-interactive,
+.leaflet-image-layer.leaflet-interactive,
+.leaflet-pane > svg path.leaflet-interactive,
+svg.leaflet-image-layer.leaflet-interactive path {
+	pointer-events: visiblePainted; 
+	pointer-events: auto;
+	}
+
+
+
+.leaflet-container {
+	background: #ddd;
+	outline-offset: 1px;
+	}
+.leaflet-container a {
+	color: #0078A8;
+	}
+.leaflet-zoom-box {
+	border: 2px dotted #38f;
+	background: rgba(255,255,255,0.5);
+	}
+
+
+
+.leaflet-container {
+	font-family: "Helvetica Neue", Arial, Helvetica, sans-serif;
+	font-size: 12px;
+	font-size: 0.75rem;
+	line-height: 1.5;
+	}
+
+
+
+
+.leaflet-bar {
+	box-shadow: 0 1px 5px rgba(0,0,0,0.65);
+	border-radius: 4px;
+	}
+.leaflet-bar a {
+	background-color: #fff;
+	border-bottom: 1px solid #ccc;
+	width: 26px;
+	height: 26px;
+	line-height: 26px;
+	display: block;
+	text-align: center;
+	text-decoration: none;
+	color: black;
+	}
+.leaflet-bar a,
+.leaflet-control-layers-toggle {
+	background-position: 50% 50%;
+	background-repeat: no-repeat;
+	display: block;
+	}
+.leaflet-bar a:hover,
+.leaflet-bar a:focus {
+	background-color: #f4f4f4;
+	}
+.leaflet-bar a:first-child {
+	border-top-left-radius: 4px;
+	border-top-right-radius: 4px;
+	}
+.leaflet-bar a:last-child {
+	border-bottom-left-radius: 4px;
+	border-bottom-right-radius: 4px;
+	border-bottom: none;
+	}
+.leaflet-bar a.leaflet-disabled {
+	cursor: default;
+	background-color: #f4f4f4;
+	color: #bbb;
+	}
+
+.leaflet-touch .leaflet-bar a {
+	width: 30px;
+	height: 30px;
+	line-height: 30px;
+	}
+.leaflet-touch .leaflet-bar a:first-child {
+	border-top-left-radius: 2px;
+	border-top-right-radius: 2px;
+	}
+.leaflet-touch .leaflet-bar a:last-child {
+	border-bottom-left-radius: 2px;
+	border-bottom-right-radius: 2px;
+	}
+
+
+
+.leaflet-control-zoom-in,
+.leaflet-control-zoom-out {
+	font: bold 18px 'Lucida Console', Monaco, monospace;
+	text-indent: 1px;
+	}
+
+.leaflet-touch .leaflet-control-zoom-in, .leaflet-touch .leaflet-control-zoom-out  {
+	font-size: 22px;
+	}
+
+
+
+
+.leaflet-control-layers {
+	box-shadow: 0 1px 5px rgba(0,0,0,0.4);
+	background: #fff;
+	border-radius: 5px;
+	}
+.leaflet-control-layers-toggle {
+	background-image: url(images/layers.png);
+	width: 36px;
+	height: 36px;
+	}
+.leaflet-retina .leaflet-control-layers-toggle {
+	background-image: url(images/layers-2x.png);
+	background-size: 26px 26px;
+	}
+.leaflet-touch .leaflet-control-layers-toggle {
+	width: 44px;
+	height: 44px;
+	}
+.leaflet-control-layers .leaflet-control-layers-list,
+.leaflet-control-layers-expanded .leaflet-control-layers-toggle {
+	display: none;
+	}
+.leaflet-control-layers-expanded .leaflet-control-layers-list {
+	display: block;
+	position: relative;
+	}
+.leaflet-control-layers-expanded {
+	padding: 6px 10px 6px 6px;
+	color: #333;
+	background: #fff;
+	}
+.leaflet-control-layers-scrollbar {
+	overflow-y: scroll;
+	overflow-x: hidden;
+	padding-right: 5px;
+	}
+.leaflet-control-layers-selector {
+	margin-top: 2px;
+	position: relative;
+	top: 1px;
+	}
+.leaflet-control-layers label {
+	display: block;
+	font-size: 13px;
+	font-size: 1.08333em;
+	}
+.leaflet-control-layers-separator {
+	height: 0;
+	border-top: 1px solid #ddd;
+	margin: 5px -10px 5px -6px;
+	}
+
+
+.leaflet-default-icon-path { 
+	background-image: url(images/marker-icon.png);
+	}
+
+
+
+
+.leaflet-container .leaflet-control-attribution {
+	background: #fff;
+	background: rgba(255, 255, 255, 0.8);
+	margin: 0;
+	}
+.leaflet-control-attribution,
+.leaflet-control-scale-line {
+	padding: 0 5px;
+	color: #333;
+	line-height: 1.4;
+	}
+.leaflet-control-attribution a {
+	text-decoration: none;
+	}
+.leaflet-control-attribution a:hover,
+.leaflet-control-attribution a:focus {
+	text-decoration: underline;
+	}
+.leaflet-attribution-flag {
+	display: inline !important;
+	vertical-align: baseline !important;
+	width: 1em;
+	height: 0.6669em;
+	}
+.leaflet-left .leaflet-control-scale {
+	margin-left: 5px;
+	}
+.leaflet-bottom .leaflet-control-scale {
+	margin-bottom: 5px;
+	}
+.leaflet-control-scale-line {
+	border: 2px solid #777;
+	border-top: none;
+	line-height: 1.1;
+	padding: 2px 5px 1px;
+	white-space: nowrap;
+	-moz-box-sizing: border-box;
+	     box-sizing: border-box;
+	background: rgba(255, 255, 255, 0.8);
+	text-shadow: 1px 1px #fff;
+	}
+.leaflet-control-scale-line:not(:first-child) {
+	border-top: 2px solid #777;
+	border-bottom: none;
+	margin-top: -2px;
+	}
+.leaflet-control-scale-line:not(:first-child):not(:last-child) {
+	border-bottom: 2px solid #777;
+	}
+
+.leaflet-touch .leaflet-control-attribution,
+.leaflet-touch .leaflet-control-layers,
+.leaflet-touch .leaflet-bar {
+	box-shadow: none;
+	}
+.leaflet-touch .leaflet-control-layers,
+.leaflet-touch .leaflet-bar {
+	border: 2px solid rgba(0,0,0,0.2);
+	background-clip: padding-box;
+	}
+
+
+
+
+.leaflet-popup {
+	position: absolute;
+	text-align: center;
+	margin-bottom: 20px;
+	}
+.leaflet-popup-content-wrapper {
+	padding: 1px;
+	text-align: left;
+	border-radius: 12px;
+	}
+.leaflet-popup-content {
+	margin: 13px 24px 13px 20px;
+	line-height: 1.3;
+	font-size: 13px;
+	font-size: 1.08333em;
+	min-height: 1px;
+	}
+.leaflet-popup-content p {
+	margin: 17px 0;
+	margin: 1.3em 0;
+	}
+.leaflet-popup-tip-container {
+	width: 40px;
+	height: 20px;
+	position: absolute;
+	left: 50%;
+	margin-top: -1px;
+	margin-left: -20px;
+	overflow: hidden;
+	pointer-events: none;
+	}
+.leaflet-popup-tip {
+	width: 17px;
+	height: 17px;
+	padding: 1px;
+
+	margin: -10px auto 0;
+	pointer-events: auto;
+
+	-webkit-transform: rotate(45deg);
+	   -moz-transform: rotate(45deg);
+	    -ms-transform: rotate(45deg);
+	        transform: rotate(45deg);
+	}
+.leaflet-popup-content-wrapper,
+.leaflet-popup-tip {
+	background: white;
+	color: #333;
+	box-shadow: 0 3px 14px rgba(0,0,0,0.4);
+	}
+.leaflet-container a.leaflet-popup-close-button {
+	position: absolute;
+	top: 0;
+	right: 0;
+	border: none;
+	text-align: center;
+	width: 24px;
+	height: 24px;
+	font: 16px/24px Tahoma, Verdana, sans-serif;
+	color: #757575;
+	text-decoration: none;
+	background: transparent;
+	}
+.leaflet-container a.leaflet-popup-close-button:hover,
+.leaflet-container a.leaflet-popup-close-button:focus {
+	color: #585858;
+	}
+.leaflet-popup-scrolled {
+	overflow: auto;
+	}
+
+.leaflet-oldie .leaflet-popup-content-wrapper {
+	-ms-zoom: 1;
+	}
+.leaflet-oldie .leaflet-popup-tip {
+	width: 24px;
+	margin: 0 auto;
+
+	-ms-filter: "progid:DXImageTransform.Microsoft.Matrix(M11=0.70710678, M12=0.70710678, M21=-0.70710678, M22=0.70710678)";
+	filter: progid:DXImageTransform.Microsoft.Matrix(M11=0.70710678, M12=0.70710678, M21=-0.70710678, M22=0.70710678);
+	}
+
+.leaflet-oldie .leaflet-control-zoom,
+.leaflet-oldie .leaflet-control-layers,
+.leaflet-oldie .leaflet-popup-content-wrapper,
+.leaflet-oldie .leaflet-popup-tip {
+	border: 1px solid #999;
+	}
+
+
+
+
+.leaflet-div-icon {
+	background: #fff;
+	border: 1px solid #666;
+	}
+
+
+
+
+.leaflet-tooltip {
+	position: absolute;
+	padding: 6px;
+	background-color: #fff;
+	border: 1px solid #fff;
+	border-radius: 3px;
+	color: #222;
+	white-space: nowrap;
+	-webkit-user-select: none;
+	-moz-user-select: none;
+	-ms-user-select: none;
+	user-select: none;
+	pointer-events: none;
+	box-shadow: 0 1px 3px rgba(0,0,0,0.4);
+	}
+.leaflet-tooltip.leaflet-interactive {
+	cursor: pointer;
+	pointer-events: auto;
+	}
+.leaflet-tooltip-top:before,
+.leaflet-tooltip-bottom:before,
+.leaflet-tooltip-left:before,
+.leaflet-tooltip-right:before {
+	position: absolute;
+	pointer-events: none;
+	border: 6px solid transparent;
+	background: transparent;
+	content: "";
+	}
+
+
+
+.leaflet-tooltip-bottom {
+	margin-top: 6px;
+}
+.leaflet-tooltip-top {
+	margin-top: -6px;
+}
+.leaflet-tooltip-bottom:before,
+.leaflet-tooltip-top:before {
+	left: 50%;
+	margin-left: -6px;
+	}
+.leaflet-tooltip-top:before {
+	bottom: 0;
+	margin-bottom: -12px;
+	border-top-color: #fff;
+	}
+.leaflet-tooltip-bottom:before {
+	top: 0;
+	margin-top: -12px;
+	margin-left: -6px;
+	border-bottom-color: #fff;
+	}
+.leaflet-tooltip-left {
+	margin-left: -6px;
+}
+.leaflet-tooltip-right {
+	margin-left: 6px;
+}
+.leaflet-tooltip-left:before,
+.leaflet-tooltip-right:before {
+	top: 50%;
+	margin-top: -6px;
+	}
+.leaflet-tooltip-left:before {
+	right: 0;
+	margin-right: -12px;
+	border-left-color: #fff;
+	}
+.leaflet-tooltip-right:before {
+	left: 0;
+	margin-left: -12px;
+	border-right-color: #fff;
+	}
+
+
+
+@media print {
+	
+	.leaflet-control {
+		-webkit-print-color-adjust: exact;
+		print-color-adjust: exact;
+		}
+	}
+
+.leaflet-container{font-family:var(--body);background:var(--sea)}
+.leaflet-popup-content-wrapper{border-radius:14px;background:var(--surface);color:var(--fg);padding:0;overflow:hidden}
+.leaflet-popup-tip{background:var(--surface)}
+.leaflet-popup-content{margin:0;width:270px!important}
+.leaflet-container a.leaflet-popup-close-button{color:#fff;text-shadow:0 1px 3px rgba(0,0,0,.6);top:6px;right:6px}
+.leaflet-bar a{background:var(--surface);color:var(--fg);border-color:var(--line)}
+.pop>img{display:block;width:100%;aspect-ratio:1/1;object-fit:contain;background:linear-gradient(180deg,#ffffff 0%,#eaf3f8 100%)}
+.pop .b{padding:12px 14px 14px}
+.pop h3{font-family:var(--display);font-weight:600;font-size:1.25rem;line-height:1.1;margin:0 0 6px}
+.chip{display:inline-block;font-size:.72rem;font-weight:700;letter-spacing:.05em;text-transform:uppercase;padding:2px 8px;border-radius:99px;background:color-mix(in srgb,var(--accent) 20%,transparent);color:var(--fg)}
+.chip.pub{background:color-mix(in srgb,var(--bld-public) 25%,transparent)}
+.chip.emp{background:color-mix(in srgb,#c9a95e 35%,transparent)}
+.pop dl{display:grid;grid-template-columns:auto 1fr;gap:3px 12px;margin:10px 0 0;font-size:.88rem}
+.pop dt{color:var(--muted)}
+.pop dd{margin:0;font-variant-numeric:tabular-nums;text-align:right}
+.pop p{margin:10px 0 0;font-size:.88rem}
+.sims-h{margin:12px 0 6px;font-size:.72rem;font-weight:700;letter-spacing:.06em;text-transform:uppercase;color:var(--muted)}
+.sims{list-style:none;margin:0;padding:0;display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:8px 6px}
+.sims li{display:flex;flex-direction:column;align-items:center;gap:3px;text-align:center;font-size:.74rem;line-height:1.2;min-width:0}
+.sims img,.sims .noimg{width:100%;max-width:72px;aspect-ratio:1/1;border-radius:50%;object-fit:cover;background:radial-gradient(circle at 50% 30%,#f1f9ff 0%,#c4e3f5 55%,#93c6e4 100%);border:2px solid var(--line)}
+.sims .noimg{display:block}
+
+.s3d{padding-block:22px 40px}
+.s3d-head{display:flex;flex-direction:column;align-items:flex-start;gap:6px;margin-bottom:12px}
+.s3d h2{font-family:"Lilita One",var(--display);font-weight:400;font-size:clamp(1.7rem,3.4vw,2.4rem);margin:0;color:#ffffff;-webkit-text-stroke:.08em #1b4f9e;paint-order:stroke fill;letter-spacing:.01em}
+.s3d-head p{margin:0;color:var(--muted);max-width:none}
+.viewer{position:relative;height:clamp(420px,74vh,860px);border-radius:14px;overflow:hidden;border:1px solid var(--line);background:#cfdbe4}
+.viewer canvas{display:block;width:100%;height:100%;touch-action:none}
+.poster{position:absolute;inset:0;display:grid;place-items:center;background:center/cover no-repeat url("3d/nahled3d.jpg")}
+.poster::before{content:"";position:absolute;inset:0;background:color-mix(in srgb,var(--bg) 35%,transparent)}
+.poster-card{position:relative;background:var(--surface);border:1px solid var(--line);border-radius:14px;padding:18px 20px;display:flex;flex-direction:column;gap:10px;align-items:flex-start;max-width:min(360px,86%);box-shadow:0 6px 24px rgba(0,0,0,.18)}
+.poster-card p{margin:0;color:var(--muted);font-size:.92rem}
+.btn{font:inherit;font-weight:700;border:0;border-radius:10px;padding:10px 16px;background:var(--accent);color:#fff;cursor:pointer}
+.btn:focus-visible{outline:2px solid var(--fg);outline-offset:2px}
+.btn.ghost{background:var(--surface);color:var(--fg);border:1px solid var(--line);font-weight:600;padding:7px 12px}
+.v-tools{position:absolute;top:12px;right:12px;z-index:5;display:flex;flex-direction:column;gap:8px;align-items:stretch;background:color-mix(in srgb,var(--surface) 92%,transparent);border:1px solid var(--line);border-radius:12px;padding:10px 12px}
+.v-tools label{display:flex;gap:8px;align-items:center;font-size:.9rem;cursor:pointer}
+.v-tools input{accent-color:var(--accent)}
+.v-help{position:absolute;left:12px;bottom:12px;z-index:5;font-size:.8rem;color:var(--fg);background:color-mix(in srgb,var(--surface) 88%,transparent);border-radius:8px;padding:5px 9px}
+.v-status{position:absolute;inset:auto 0 0 0;margin:auto;top:0;height:max-content;width:max-content;max-width:86%;z-index:6;background:var(--surface);border:1px solid var(--line);border-radius:12px;padding:12px 16px;font-size:.92rem}
+.v-info{position:absolute;left:12px;top:12px;z-index:6;width:min(270px,70%);background:var(--surface);border:1px solid var(--line);border-radius:14px;overflow:hidden;box-shadow:0 6px 24px rgba(0,0,0,.2)}
+.v-info .x{position:absolute;top:6px;right:8px;z-index:2;font:inherit;font-size:1.2rem;line-height:1;border:0;background:transparent;color:#fff;text-shadow:0 1px 3px rgba(0,0,0,.7);cursor:pointer}
+.v-info .pop>img{aspect-ratio:16/10}
+@media (prefers-reduced-motion:reduce){*{transition:none!important;animation:none!important}}
+/* horní menu a nové části */
+html{scroll-behavior:smooth}
+#mapa,#informace,#model,#postup{scroll-margin-top:64px}
+.topnav{position:sticky;top:0;z-index:1100;background:color-mix(in srgb,var(--bg) 88%,transparent);-webkit-backdrop-filter:blur(8px);backdrop-filter:blur(8px);border-bottom:1px solid var(--line);margin-bottom:14px}
+.topnav ul{list-style:none;margin:0;padding:8px 0;display:flex;gap:6px;flex-wrap:wrap}
+.topnav a{display:block;padding:7px 14px;border-radius:99px;color:var(--fg);text-decoration:none;font-weight:700;font-size:.95rem}
+.topnav a:hover{background:color-mix(in srgb,var(--accent) 16%,transparent)}
+.topnav a.on{background:var(--accent);color:#fff}
+.topnav a:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
+.sec-h{font-family:"Lilita One",var(--display);font-weight:400;font-size:clamp(1.7rem,3.4vw,2.4rem);margin:0 0 8px;color:#ffffff;-webkit-text-stroke:.08em #1b4f9e;paint-order:stroke fill;letter-spacing:.01em}
+.info{display:grid;grid-template-columns:minmax(0,1.15fr) minmax(0,1fr);gap:28px;align-items:center;padding-block:26px 6px}
+.info-text>p{margin:0 0 16px;max-width:62ch}
+.stats{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:10px;margin:0}
+.stats div{background:var(--surface);border:1px solid var(--line);border-radius:12px;padding:10px 12px}
+.stats dt{color:var(--muted);font-size:.78rem;line-height:1.25}
+.stats dd{margin:2px 0 0;font-family:var(--display);font-weight:700;font-size:1.45rem;line-height:1.1;font-variant-numeric:tabular-nums}
+@media (max-width:900px){.info{grid-template-columns:minmax(0,1fr)}.stats{grid-template-columns:repeat(2,minmax(0,1fr))}}
+.postup{padding-block:0 56px}
+.steps{list-style:none;margin:6px 0 0;padding:0;display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:12px;counter-reset:k}
+.steps li{counter-increment:k;background:var(--surface);border:1px solid var(--line);border-radius:14px;padding:14px 16px;display:flex;flex-direction:column;gap:4px}
+.steps li::before{content:counter(k);display:grid;place-items:center;width:30px;height:30px;border-radius:99px;background:var(--accent);color:#fff;font-weight:800;margin-bottom:4px}
+.steps b{font-family:var(--display);font-size:1.1rem}
+.steps span{color:var(--muted);font-size:.92rem}
+@media (max-width:900px){.steps{grid-template-columns:minmax(0,1fr)}}
+@media (prefers-reduced-motion:reduce){html{scroll-behavior:auto}}
+.leaflet-control-scale{margin:0 0 10px 10px!important}
+.leaflet-bottom.leaflet-right .m-imprint{margin:0 10px 10px 0;text-align:right;font-size:.68rem;line-height:1.35;color:#333;background:rgba(255,255,255,.55);padding:1px 6px;border-radius:4px;max-width:calc(100vw - 80px)}
+.foot{border-top:1px solid var(--line);padding-block:18px 28px;color:var(--muted);font-size:.82rem}
+.foot p{margin:0 0 4px;max-width:110ch}
+.foot b{color:var(--fg)}
+.leaflet-control-scale-line{background:rgba(255,255,255,.5);color:#333;border:1.5px solid rgba(40,40,40,.75);border-top:0;font-family:var(--body);font-size:.68rem;font-weight:500;padding:0 4px;line-height:1.35;text-shadow:0 0 2px rgba(255,255,255,.9);box-sizing:content-box}
+/* nástroje pod zoomem: vrstvy a legenda */
+.m-tools{display:flex;flex-direction:column;gap:8px;align-items:flex-end;clear:both}
+.m-tool{position:relative}
+.m-tool>button{width:34px;height:34px;border-radius:8px;border:2px solid rgba(0,0,0,.2);background:var(--surface);color:var(--fg);display:grid;place-items:center;cursor:pointer;padding:0;background-clip:padding-box}
+.m-tool>button:hover{background:color-mix(in srgb,var(--accent) 14%,var(--surface))}
+.m-tool>button[aria-expanded="true"]{background:var(--accent);color:#fff}
+.m-tool>button:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
+.m-pop{position:absolute;top:0;right:calc(100% + 8px);width:220px;background:var(--surface);color:var(--fg);border:1px solid var(--line);border-radius:12px;padding:12px 14px;box-shadow:0 8px 24px rgba(0,0,0,.2);font-size:.92rem;cursor:auto}
+.m-pop[hidden]{display:none}
+.m-pop h2{font-family:var(--display);font-weight:600;font-size:1.05rem;margin:0 0 8px}
+.m-pop .legend{font-size:.88rem}
+.leg-sep{grid-column:1 / -1;border:0;border-top:1px solid #c4c4c4;margin:3px 0;width:100%}
+.drawer .only{display:flex;align-items:center;gap:8px;font-size:.88rem;cursor:pointer}
+.drawer .only input{accent-color:var(--accent);width:16px;height:16px}
+.map-howto{margin:0 4px -4px;color:var(--muted);font-size:.95rem}
+.map-note{color:var(--muted);font-size:.85rem;margin:2px 4px 0;text-align:center}
+</style>
+
+<header class="hero"><div class="wrap">
+  <div class="brand">
+    <img class="mark" src="logo2.png" alt="The Sims 3">
+    <div>
+      <h1>Sunset <span>Valley</span></h1>
+      <p class="sub">Interaktivní mapa města ze hry The Sims 3.</p>
+    </div>
+  </div>
+  <div class="meta">Svět 2 048 × 2 048 m · 92 pozemků · 16 veřejných budov</div>
+</div></header>
+<nav class="topnav" aria-label="Části stránky"><div class="wrap"><ul>
+  <li><a href="#mapa">Mapa</a></li>
+  <li><a href="#informace">Informace</a></li>
+  <li><a href="#model">Zobrazení ve 3D</a></li>
+  <li><a href="#postup">Jak mapa vznikla</a></li>
+</ul></div></nav>
+
+<main class="wrap" id="mapa">
+  <p class="map-howto">Klikni na pozemek nebo budovu a zobrazí se, co na něm stojí a kdo tam bydlí.</p>
+  <div class="mapwrap" id="mapwrap">
+    <div id="map" role="region" aria-label="Mapa Sunset Valley"></div>
+    <div class="drawer" id="drawer" aria-hidden="true">
+      <h2>Hledat</h2>
+      <input type="search" id="q" placeholder="Název, rodina nebo typ…" autocomplete="off" aria-label="Hledat pozemek nebo budovu">
+      <label class="only" for="q-pub"><input type="checkbox" id="q-pub"> Jen veřejná místa a budovy</label>
+      <p class="count" id="count"></p>
+      <ul class="results" id="results"></ul>
+    </div>
+    <button class="drawer-btn" id="drawer-btn" type="button" aria-controls="drawer" aria-expanded="false" aria-label="Otevřít vyhledávání">
+      <svg width="18" height="18" viewBox="0 0 18 18" aria-hidden="true"><path d="M6 3l6 6-6 6" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+    </button>
+  </div>
+  <p class="map-note">Mapa, polohy pozemků i náhledy pochází přímo z dat hry. Domácnosti a obyvatelé jsou z uložených dat světa, jak je hra nabízí na začátku nové hry.</p>
+</main>
+
+<section class="wrap info" id="informace">
+  <div class="info-text">
+    <h2 class="sec-h">Informace</h2>
+    <p>Sunset Valley je výchozí město hry The Sims 3. Leží v údolí mezi mořskou zátokou a horami. Uprostřed je centrum s radnicí a dalšími veřejnými budovami, kolem něj čtvrti rodinných domů, na pobřeží pláže a na okraji města vojenská základna.</p>
+    <dl class="stats">
+      <div><dt>Rozloha světa</dt><dd>2 × 2 km</dd></div>
+      <div><dt>Pozemků</dt><dd>92</dd></div>
+      <div><dt>Rodinných domů</dt><dd>43</dd></div>
+      <div><dt>Veřejných míst a budov</dt><dd>28</dd></div>
+      <div><dt>Domácností</dt><dd>25</dd></div>
+      <div><dt>Obyvatel</dt><dd>62</dd></div>
+      <div><dt>Nejvyšší bod nad mořem</dt><dd>386 m</dd></div>
+      <div><dt>Plochy pod hladinou moře</dt><dd>27 %</dd></div>
+    </dl>
+  </div>
+  <figure class="simove"><img src="simove.webp" alt="Skupina simíků" width="1100" height="689" loading="lazy"></figure>
+</section>
+
+<section class="wrap s3d" id="model">
+  <div class="s3d-head">
+    <h2>Zobrazení ve 3D</h2>
+    <p>Celé údolí v prostoru: terén z výškové mapy hry, velké budovy a parcely s domy. Na budovu nebo pozemek můžeš kliknout.</p>
+  </div>
+  <div class="viewer" id="viewer">
+    <div class="poster" id="poster">
+      <div class="poster-card">
+        <strong>Prohlížeč 3D modelu</strong>
+        <p>Načte se zhruba 30 MB dat. Pak můžeš modelem otáčet, přibližovat ho a posouvat.</p>
+        <button class="btn" id="start3d" type="button">Spustit 3D model</button>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="wrap postup" id="postup">
+  <h2 class="sec-h">Jak mapa vznikla</h2>
+  <ol class="steps">
+    <li><b>Data ze hry</b><span>Z herních souborů světa (balíčky DBPF) byla vytažena výšková mapa, textury terénu, silnice, pozemky s jejich údaji a 3D modely budov.</span></li>
+    <li><b>Digitální model terénu</b><span>Výšková mapa byla převedena na DEM v metrech pro svět 2 048 × 2 048 m. Hladina moře leží ve výšce 28,07 m.</span></li>
+    <li><b>Vrstvy v ArcGIS Pro</b><span>Pozemky, budovy, silnice, moře a stromy vznikly jako samostatné vrstvy s atributy, například název, typ, domácnost a rozměry.</span></li>
+    <li><b>Webová mapa a 3D</b><span>2D mapa je postavená v knihovně Leaflet, 3D model terénu a budov v three.js. Náhledy pozemků a portréty obyvatel pochází přímo ze hry.</span></li>
+  </ol>
+</section>
+
+<footer class="wrap foot">
+  <p><b>Autorka:</b> Veronika Plisková, 2026 · <b>Zdroj dat:</b> hra The Sims™ 3 (Electronic Arts Inc.)</p>
+  <p>Nekomerční studentský projekt. The Sims™ 3 © Electronic Arts Inc. The Sims a související loga jsou ochranné známky společnosti Electronic Arts Inc. a jejích poskytovatelů licencí. Tento web není podporován společností EA ani jejími poskytovateli licencí a není s nimi nijak spojen.</p>
+  <p lang="en">This site is not endorsed by or affiliated with Electronic Arts or its licensors. Trademarks are the property of their respective owners.</p>
+</footer>
+
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.min.js"></script>
+<script src="data.js"></script>
+<script>
+(function(){
+  const nf=new Intl.NumberFormat('cs-CZ');
+  const n1=new Intl.NumberFormat('cs-CZ',{minimumFractionDigits:1,maximumFractionDigits:1});
+  const css=getComputedStyle(document.documentElement);
+  const C=k=>css.getPropertyValue(k).trim();
+  const map=L.map('map',{crs:L.CRS.Simple,minZoom:-2,maxZoom:3,zoomSnap:0,zoomDelta:.5,attributionControl:false,zoomControl:false,maxBoundsViscosity:1,bounceAtZoomLimits:false});
+  L.control.zoom({position:'topright',zoomInTitle:'Přiblížit',zoomOutTitle:'Oddálit'}).addTo(map);
+  // měřítko: 1 jednotka mapy = 1 m, mění se se zoomem
+  L.control.scale({position:'bottomleft',metric:true,imperial:false,maxWidth:160}).addTo(map);
+  // tiráž (vpravo dole)
+  const Imprint=L.Control.extend({options:{position:'bottomright'},onAdd(){const d=L.DomUtil.create('div','leaflet-control m-imprint');
+    d.innerHTML='Autorka: Veronika Plisková · Zdroj dat: hra The Sims™ 3, © Electronic Arts Inc. · 2026';L.DomEvent.disableClickPropagation(d);return d;}});
+  new Imprint().addTo(map);
+  const B=L.latLngBounds([[0,0],[2048,2048]]);
+  L.imageOverlay('mapa.jpg',B).addTo(map);
+  map.setMaxBounds(B);
+  // nejmenší přiblížení = mapa právě vyplní celé okno, takže okolí mapy nikdy není vidět
+  function fitZoom(){
+    const z=map.getBoundsZoom(B,true);
+    map.setMinZoom(z);
+    if(map.getZoom()<z||!map._loaded) map.setView(B.getCenter(),z,{animate:false});
+    map.panInsideBounds(B,{animate:false});
+  }
+  fitZoom();
+  map.on('resize',fitZoom);
+  const ll=c=>L.latLng(c[1],c[0]);
+  function esc(s){return String(s??'').replace(/[&<>"]/g,m=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[m]))}
+  function title(p){
+    if(p.typ==='Rodinný dům' && !/^Rodinný dům$/.test(p.title)) return 'Dům „'+p.title+'“';
+    return p.title;
+  }
+  function chip(p){
+    const cls=p.typ==='Veřejná budova'||p.typ==='Veřejné místo'?'chip pub':(p.typ==='Prázdný pozemek'?'chip emp':'chip');
+    return '<span class="'+cls+'">'+esc(p.kind==='bld'?(p.verejna?'Veřejná budova':'Budova'):p.typ)+'</span>';
+  }
+  function popup(p){
+    const rows=[];
+    if(p.rodina) rows.push(['Domácnost',p.rodina]);
+    if(p.clenove && !p.obyv) rows.push(['Obyvatelé',p.clenove]);
+    if(p.kind==='lot'){
+      rows.push(['Velikost pozemku',p.w+' × '+p.d+' polí']);
+      rows.push(['Plocha',nf.format(p.plocha)+' m²']);
+      rows.push(['Nadmořská výška',n1.format(p.vyska)+' m']);
+    } else {
+      if(p.podlazi) rows.push(['Podlaží',p.podlazi]);
+      if(p.vyska_budovy) rows.push(['Výška budovy',n1.format(p.vyska_budovy)+' m']);
+      if(p.plocha) rows.push(['Zastavěná plocha',nf.format(p.plocha)+' m²']);
+    }
+    return '<div class="pop">'+(p.nahled?'<img src="'+esc(p.nahled)+'" alt="Náhled pozemku ze hry" loading="lazy">':'')+
+      '<div class="b"><h3>'+esc(title(p))+'</h3>'+chip(p)+
+      '<dl>'+rows.map(r=>'<dt>'+esc(r[0])+'</dt><dd>'+esc(r[1])+'</dd>').join('')+'</dl>'+
+      (p.obyv&&p.obyv.length?'<div class="sims-h">Obyvatelé</div><ul class="sims">'+p.obyv.map(s=>'<li>'+(s.foto?'<img src="'+esc(s.foto)+'" alt="" loading="lazy">':'<span class="noimg"></span>')+'<span>'+esc(s.jmeno)+'</span></li>').join('')+'</ul>':'')+
+      (p.popis?'<p>'+esc(p.popis)+'</p>':'')+'</div></div>';
+  }
+  window.SVpopup=p=>popup(p);
+  // informacni karta: pevne v rohu mapy, takze je vzdy cela videt bez ohledu na priblizeni
+  let selected=null; const card=document.createElement('div'); card.className='m-info'; card.hidden=true;
+  document.getElementById('mapwrap').appendChild(card);
+  L.DomEvent.disableClickPropagation(card); L.DomEvent.disableScrollPropagation(card);
+  function unselect(){ if(selected){const k=selected.feature.properties.kind; selected.setStyle({weight:k==='lot'?.6:.4,color:k==='lot'?'#fffbe8':'#2a1714'});} selected=null; card.hidden=true; }
+  function select(layer){
+    unselect(); closeTools(); selected=layer; layer.setStyle({weight:2.4,color:'#ffd84a'}); layer.bringToFront();
+    card.innerHTML='<button class="x" type="button" aria-label="Zavřít">×</button>'+popup(layer.feature.properties);
+    card.querySelector('.x').addEventListener('click',unselect); card.hidden=false; card.scrollTop=0;
+  }
+  map.on('click',unselect);
+  document.addEventListener('keydown',e=>{if(e.key==='Escape'&&!card.hidden)unselect();});
+  function lotStyle(f){
+    const t=f.properties.typ;
+    const col=t==='Prázdný pozemek'?C('--lot-empty'):(t==='Rodinný dům'?C('--lot-house'):C('--lot-public'));
+    return {color:'#fffbe8',weight:.6,fillColor:col,fillOpacity:.35,opacity:.8};
+  }
+  function bldStyle(f){
+    const pub=f.properties.verejna||f.properties.typ==='Veřejné místo';
+    return {color:'#2a1714',weight:.4,fillColor:pub?C('--bld-public'):C('--bld-house'),fillOpacity:.9,opacity:.7};
+  }
+  let lots,blds;
+  Promise.resolve(window.SV_DATA).then(gj=>{
+    const lf=gj.features.filter(f=>f.properties.kind==='lot');
+    const bf=gj.features.filter(f=>f.properties.kind==='bld');
+    function bind(feature,layer){
+      layer.on('click',e=>{L.DomEvent.stopPropagation(e);select(layer);});
+      layer.on('mouseover',()=>{if(layer!==selected)layer.setStyle({weight:1.6});});
+      layer.on('mouseout',()=>{if(layer!==selected)layer.setStyle({weight:feature.properties.kind==='lot'?.6:.4});});
+    }
+    lots=L.geoJSON(lf,{coordsToLatLng:ll,style:lotStyle,onEachFeature:bind}).addTo(map);
+    blds=L.geoJSON(bf,{coordsToLatLng:ll,style:bldStyle,onEachFeature:bind}).addTo(map);
+    buildSearch();
+  });
+  // vysouvací panel s vyhledáváním
+  const wrap=document.getElementById('mapwrap'), btn=document.getElementById('drawer-btn'), drawer=document.getElementById('drawer'), q=document.getElementById('q'), res=document.getElementById('results'), cnt=document.getElementById('count');
+  function setOpen(o){wrap.classList.toggle('open',o);btn.setAttribute('aria-expanded',o);drawer.setAttribute('aria-hidden',!o);btn.setAttribute('aria-label',o?'Zavřít vyhledávání':'Otevřít vyhledávání');if(o)setTimeout(()=>q.focus(),260);}
+  btn.addEventListener('click',()=>setOpen(!wrap.classList.contains('open')));
+  drawer.addEventListener('keydown',e=>{if(e.key==='Escape'){setOpen(false);btn.focus();}});
+  L.DomEvent.disableClickPropagation(drawer); L.DomEvent.disableScrollPropagation(drawer); L.DomEvent.disableClickPropagation(btn);
+  const norm=s=>String(s||'').normalize('NFD').replace(/[̀-ͯ]/g,'').toLowerCase();
+  let items=[];
+  function buildSearch(){
+    lots.eachLayer(l=>{const p=l.feature.properties; items.push({pub:p.typ==='Veřejná budova'||p.typ==='Veřejné místo',t:title(p),sub:[p.typ,p.rodina?'domácnost '+p.rodina:null].filter(Boolean).join(' · '),key:norm([title(p),p.typ,p.rodina,p.clenove,p.popis].join(' ')),l});});
+    items.sort((a,b)=>a.t.localeCompare(b.t,'cs'));
+    render();
+  }
+  function render(){
+    const w=norm(q.value).trim().split(/\s+/).filter(Boolean);
+    const only=document.getElementById('q-pub').checked;
+    const hit=items.filter(it=>(!only||it.pub)&&w.every(x=>it.key.includes(x)));
+    cnt.textContent=(w.length||only)?('Nalezeno: '+hit.length):('Všechny pozemky: '+items.length);
+    res.innerHTML='';
+    hit.forEach(it=>{const li=document.createElement('li'),b=document.createElement('button');b.type='button';b.innerHTML='<b>'+esc(it.t)+'</b><span>'+esc(it.sub)+'</span>';
+      b.addEventListener('click',()=>{map.flyToBounds(it.l.getBounds(),{maxZoom:1.5,duration:.8});setTimeout(()=>select(it.l),300);if(window.innerWidth<700)setOpen(false);});
+      li.appendChild(b);res.appendChild(li);});
+  }
+  q.addEventListener('input',render);
+  document.getElementById('q-pub').addEventListener('change',render);
+  // tlačítka pod zoomem: vrstvy a legenda
+  const Tools=L.Control.extend({options:{position:'topright'},onAdd(){
+    const d=L.DomUtil.create('div','leaflet-control m-tools');
+    d.innerHTML=`<div class="m-tool"><button type="button" id="b-lay" aria-expanded="false" aria-controls="p-lay" title="Vrstvy" aria-label="Vrstvy">
+        <svg width="18" height="18" viewBox="0 0 24 24" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round"><path d="M12 3l9 5-9 5-9-5 9-5z"/><path d="M3 13l9 5 9-5"/></svg></button>
+        <div class="m-pop" id="p-lay" hidden><h2>Vrstvy</h2><div class="toggles">
+          <label for="t-lots"><input type="checkbox" id="t-lots" checked> Pozemky</label>
+          <label for="t-bld"><input type="checkbox" id="t-bld" checked> Budovy</label></div></div></div>
+      <div class="m-tool"><button type="button" id="b-leg" aria-expanded="false" aria-controls="p-leg" title="Legenda" aria-label="Legenda">
+        <svg width="18" height="18" viewBox="0 0 24 24" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><rect x="3" y="4" width="5" height="4" rx="1"/><rect x="3" y="10" width="5" height="4" rx="1"/><rect x="3" y="16" width="5" height="4" rx="1"/><path d="M11 6h10M11 12h10M11 18h10"/></svg></button>
+        <div class="m-pop" id="p-leg" hidden><h2>Legenda</h2><div class="legend">
+          <span class="sw" style="background:var(--lot-house)"></span><span>Pozemek s domem</span>
+          <span class="sw" style="background:var(--lot-public)"></span><span>Veřejné místo</span>
+          <span class="sw" style="background:var(--lot-empty)"></span><span>Prázdný pozemek</span>
+          <hr class="leg-sep">
+          <span class="sw" style="background:var(--bld-house)"></span><span>Rodinný dům</span>
+          <span class="sw" style="background:var(--bld-public)"></span><span>Veřejná budova</span></div></div></div>`;
+    L.DomEvent.disableClickPropagation(d); L.DomEvent.disableScrollPropagation(d);
+    return d;}});
+  new Tools().addTo(map);
+  const toolBtns=[['b-lay','p-lay'],['b-leg','p-leg']].map(([b,p])=>[document.getElementById(b),document.getElementById(p)]);
+  function closeTools(except){toolBtns.forEach(([b,p])=>{if(b!==except){b.setAttribute('aria-expanded','false');p.hidden=true;}});}
+  toolBtns.forEach(([b,p])=>b.addEventListener('click',()=>{const o=p.hidden;closeTools(b);p.hidden=!o;b.setAttribute('aria-expanded',o);if(o)unselect();}));
+  map.on('click',()=>closeTools());
+  document.addEventListener('keydown',e=>{if(e.key==='Escape')closeTools();});
+  document.getElementById('t-lots').addEventListener('change',e=>{ if(!lots) return; e.target.checked?lots.addTo(map):map.removeLayer(lots); if(e.target.checked&&blds&&map.hasLayer(blds)) blds.bringToFront(); });
+  document.getElementById('t-bld').addEventListener('change',e=>{ if(!blds) return; e.target.checked?blds.addTo(map):map.removeLayer(blds); });
+})();
+</script>
+
+<script>
+(function(){
+  const viewer=document.getElementById('viewer'), start=document.getElementById('start3d');
+  const libs=['https://cdn.jsdelivr.net/npm/three@0.147.0/build/three.min.js','https://cdn.jsdelivr.net/npm/three@0.147.0/examples/js/loaders/GLTFLoader.js','https://cdn.jsdelivr.net/npm/three@0.147.0/examples/js/controls/OrbitControls.js'];
+  function load(src){return new Promise((ok,err)=>{const s=document.createElement('script');s.src=src;s.onload=ok;s.onerror=()=>err(new Error(src));document.head.appendChild(s);});}
+  function status(t){let el=viewer.querySelector('.v-status'); if(!t){el&&el.remove();return;} if(!el){el=document.createElement('div');el.className='v-status';viewer.appendChild(el);} el.textContent=t;}
+  // 3D data jsou v .js souborech (base64), aby web šel otevřít i přímo z disku (file://)
+  async function bin(n){ if(!(window.SV3D&&SV3D[n])) await load('3d/'+n+'.js'); const s=SV3D[n]; delete SV3D[n];
+    const r=atob(s), u=new Uint8Array(r.length); for(let i=0;i<r.length;i++) u[i]=r.charCodeAt(i); return u.buffer; }
+  async function texUrl(){ if(!(window.SV3D&&SV3D.teren_tex)) await load('3d/teren_tex.js'); return SV3D.teren_tex; }
+  start.addEventListener('click',async()=>{
+    document.getElementById('poster').remove(); status('Načítám knihovnu pro 3D…');
+    try{ for(const l of libs) await load(l); }catch(e){ status('Knihovnu pro 3D se nepodařilo načíst. Zkontroluj připojení a obnov stránku.'); return; }
+    init().catch(e=>{console.error(e); status('Model se nepodařilo načíst: '+e.message);});
+  });
+  async function init(){
+    const W=()=>viewer.clientWidth, H=()=>viewer.clientHeight;
+    const renderer=new THREE.WebGLRenderer({antialias:true});
+    renderer.setPixelRatio(Math.min(window.devicePixelRatio,2)); renderer.setSize(W(),H());
+    renderer.outputEncoding=THREE.sRGBEncoding;
+    viewer.appendChild(renderer.domElement);
+    const scene=new THREE.Scene(); scene.background=new THREE.Color(0xcfdce6); scene.fog=new THREE.Fog(0xcfdce6,1800,5200);
+    const camera=new THREE.PerspectiveCamera(45,W()/H(),2,12000);
+    const HOME={pos:new THREE.Vector3(-1150,520,180),tgt:new THREE.Vector3(60,40,40)};
+    camera.position.copy(HOME.pos);
+    const ctl=new THREE.OrbitControls(camera,renderer.domElement);
+    ctl.target.copy(HOME.tgt); ctl.enableDamping=true; ctl.dampingFactor=.08; ctl.maxPolarAngle=Math.PI/2-0.06; ctl.minDistance=25; ctl.maxDistance=3200; ctl.screenSpacePanning=false;
+    scene.add(new THREE.HemisphereLight(0xffffff,0x6b7a5a,.95));
+    const sun=new THREE.DirectionalLight(0xffffff,.55); sun.position.set(-600,900,-300); scene.add(sun);
+    // teren
+    status('Načítám terén…');
+    const [buf,tex]=await Promise.all([bin('teren'),texUrl().then(u=>new Promise((ok,err)=>new THREE.TextureLoader().load(u,ok,undefined,err)))]);
+    tex.encoding=THREE.sRGBEncoding; tex.anisotropy=renderer.capabilities.getMaxAnisotropy();
+    const h=new Uint16Array(buf), N=513, pos=new Float32Array(N*N*3), uv=new Float32Array(N*N*2);
+    for(let j=0;j<N;j++)for(let i=0;i<N;i++){const k=j*N+i;pos[k*3]=i*4-1024;pos[k*3+1]=h[k]/65.536;pos[k*3+2]=j*4-1024;uv[k*2]=i/(N-1);uv[k*2+1]=1-j/(N-1);}
+    const idx=new Uint32Array((N-1)*(N-1)*6); let p=0;
+    for(let j=0;j<N-1;j++)for(let i=0;i<N-1;i++){const a=j*N+i,b=a+1,c=a+N,d=c+1;idx[p++]=a;idx[p++]=c;idx[p++]=b;idx[p++]=b;idx[p++]=c;idx[p++]=d;}
+    const g=new THREE.BufferGeometry(); g.setAttribute('position',new THREE.BufferAttribute(pos,3)); g.setAttribute('uv',new THREE.BufferAttribute(uv,2)); g.setIndex(new THREE.BufferAttribute(idx,1)); g.computeVertexNormals();
+    const terrain=new THREE.Mesh(g,new THREE.MeshLambertMaterial({map:tex})); scene.add(terrain);
+    const sea=new THREE.Mesh(new THREE.PlaneGeometry(12000,12000),new THREE.MeshLambertMaterial({color:0x3f7fa8,transparent:true,opacity:.72}));
+    sea.rotation.x=-Math.PI/2; sea.position.y=28.07; scene.add(sea);
+    let raf; function loop(){raf=requestAnimationFrame(loop); ctl.update(); renderer.render(scene,camera);} loop();
+    new ResizeObserver(()=>{renderer.setSize(W(),H());camera.aspect=W()/H();camera.updateProjectionMatrix();}).observe(viewer);
+    // modely
+    const loader=new THREE.GLTFLoader(); const groups={budovy:new THREE.Group(),parcely:new THREE.Group()};
+    scene.add(groups.budovy,groups.parcely);
+    const files=[['budovy_a','budovy'],['budovy_b','budovy'],['ostatni','budovy'],['parcely','parcely']];
+    let done=0;
+    status('Načítám budovy a parcely… 0 / '+files.length);
+    await Promise.all(files.map(([f,grp])=>bin(f).then(ab=>new Promise((ok)=>loader.parse(ab,'',gl=>{
+      gl.scene.traverse(o=>{if(o.isMesh){o.material.side=THREE.DoubleSide; if(o.material.map) o.material.map.anisotropy=4;}});
+      groups[grp].add(gl.scene); done++; status('Načítám budovy a parcely… '+done+' / '+files.length); ok();
+    },e=>{console.error(e);done++;ok();}))).catch(e=>{console.error(e);done++;})));
+    status(null);
+    // ovladani
+    const tools=document.createElement('div'); tools.className='v-tools';
+    tools.innerHTML='<label for="v-b"><input type="checkbox" id="v-b" checked> Budovy</label><label for="v-p"><input type="checkbox" id="v-p" checked> Parcely</label><label for="v-s"><input type="checkbox" id="v-s" checked> Moře</label><button class="btn ghost" id="v-home" type="button">Výchozí pohled</button>';
+    viewer.appendChild(tools);
+    tools.querySelector('#v-b').addEventListener('change',e=>groups.budovy.visible=e.target.checked);
+    tools.querySelector('#v-p').addEventListener('change',e=>groups.parcely.visible=e.target.checked);
+    tools.querySelector('#v-s').addEventListener('change',e=>sea.visible=e.target.checked);
+    tools.querySelector('#v-home').addEventListener('click',()=>{camera.position.copy(HOME.pos);ctl.target.copy(HOME.tgt);});
+    const help=document.createElement('div'); help.className='v-help'; help.textContent='Tažení: otáčení · kolečko: přiblížení · pravé tlačítko nebo dva prsty: posun';
+    viewer.appendChild(help);
+    // klikani na budovy a pozemky
+    const data=window.SV_DATA;
+    const byLot={}; data.features.forEach(f=>{if(f.properties.kind==='lot') byLot[f.properties.interni]=f.properties;});
+    const pubB={}; data.features.forEach(f=>{const q=f.properties; if(q.kind==='bld'&&q.verejna) pubB[q.title]=q;});
+    const czMap={Radnice:'Radnice',Skola:'Škola',Jidelna:'Jídelna',Nemocnice:'Nemocnice',Divadlo:'Divadlo',Obchod_s_potravinami:'Obchod s potravinami',Knihkupectvi:'Knihkupectví',Firma_a_noviny:'Firma a redakce novin',Policejni_stanice:'Policejní stanice',Vojenska_zakladna:'Vojenská základna',Mauzoleum:'Mauzoleum',Ukryt_zlocincu:'Úkryt zločinců',Stadion:'Stadion',Lazne:'Lázně',Vedecka_laborator:'Vědecká laboratoř',Bistro:'Bistro'};
+    const ray=new THREE.Raycaster(), m=new THREE.Vector2(); let down=null;
+    renderer.domElement.addEventListener('pointerdown',e=>down=[e.clientX,e.clientY]);
+    renderer.domElement.addEventListener('pointerup',e=>{
+      if(!down||Math.hypot(e.clientX-down[0],e.clientY-down[1])>5) return;
+      const r=renderer.domElement.getBoundingClientRect(); m.set((e.clientX-r.left)/r.width*2-1,-(e.clientY-r.top)/r.height*2+1);
+      ray.setFromCamera(m,camera);
+      const hits=ray.intersectObjects([groups.budovy,groups.parcely].filter(g=>g.visible),true);
+      if(!hits.length){closeInfo();return;}
+      let o=hits[0].object; while(o&&!(o.userData&&('lot' in o.userData))) o=o.parent;
+      if(!o) return;
+      const u=o.userData; let props=null;
+      if(u.budova&&czMap[u.budova]) props=pubB[czMap[u.budova]];
+      else if(u.budova) props={kind:'bld',verejna:true,title:u.budova,typ:'Veřejná budova',plocha:0,popis:u.budova==='Maják'?'Maják na skalnatém ostrůvku u západního pobřeží.':'Raketová rampa s hangárem u vojenské základny.'};
+      if(!props&&u.lot) props=byLot[u.lot];
+      if(props) showInfo(props);
+    });
+    let info=null;
+    function closeInfo(){info&&info.remove();info=null;}
+    function showInfo(pr){
+      closeInfo(); info=document.createElement('div'); info.className='v-info';
+      const html=window.SVpopup?window.SVpopup(Object.assign({},pr,{plocha:pr.plocha||undefined})):'';
+      info.innerHTML='<button class="x" type="button" aria-label="Zavřít">×</button>'+html;
+      info.querySelector('.x').addEventListener('click',closeInfo); viewer.appendChild(info);
+    }
+  }
+})();
+</script>
+
+<script>
+(function(){const links=[...document.querySelectorAll('.topnav a')];
+  const secs=links.map(a=>document.querySelector(a.getAttribute('href')));
+  function upd(){let k=0;secs.forEach((t,i)=>{if(t&&t.getBoundingClientRect().top<=window.innerHeight*0.35)k=i;});
+    if(window.innerHeight+window.scrollY>=document.documentElement.scrollHeight-4)k=secs.length-1;
+    links.forEach((a,i)=>{a.classList.toggle('on',i===k);if(i===k)a.setAttribute('aria-current','true');else a.removeAttribute('aria-current');});}
+  window.addEventListener('scroll',upd,{passive:true});window.addEventListener('resize',upd);upd();})();
+</script>
+
+</body></html>
